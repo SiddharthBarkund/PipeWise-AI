@@ -8,15 +8,17 @@ def load_dataset(file, filename):
     """Load a dataset file using pandas based on extension."""
     ext = filename.lower().split('.')[-1]
     if ext == 'csv':
-        return pd.read_csv(file)
+        df = pd.read_csv(file)
     elif ext in ['xls', 'xlsx']:
-        return pd.read_excel(file)
+        df = pd.read_excel(file)
     elif ext == 'json':
-        return pd.read_json(file)
+        df = pd.read_json(file)
     elif ext == 'parquet':
-        return pd.read_parquet(file)
+        df = pd.read_parquet(file)
     else:
         raise ValueError(f"Unsupported file extension: {ext}")
+    df.columns = df.columns.str.strip()
+    return df
 
 def load_demo_dataset():
     """Load the built-in Titanic demo dataset."""
@@ -39,6 +41,7 @@ def load_demo_dataset():
             "Embarked": np.random.choice(["S", "C", "Q", np.nan], n, p=[0.70, 0.19, 0.09, 0.02]),
         })
         filename = "titanic_demo.csv"
+    df.columns = df.columns.str.strip()
     return df, filename
 
 def get_basic_meta(df, file=None):
