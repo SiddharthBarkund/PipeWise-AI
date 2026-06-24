@@ -32,7 +32,12 @@ export default function AIChatPage({ fileData }) {
 
     try {
       const result = await sendChatMessage(question);
-      setMessages((prev) => [...prev, { role: 'assistant', text: result.reply }]);
+      setMessages((prev) => [...prev, {
+        role: 'assistant',
+        text: result.reply,
+        chart: result.chart,
+        chartDescription: result.chartDescription
+      }]);
     } catch (e) {
       setMessages((prev) => [...prev, { role: 'assistant', text: `⚠️ Error: ${e.message}` }]);
     } finally {
@@ -47,13 +52,34 @@ export default function AIChatPage({ fileData }) {
       <div className="breadcrumb"><span>Pipeline</span><ChevronRightIcon /><span className="current">AI chat</span></div>
       <h2 className="page-title">AI Data Chat</h2>
       <p className="page-subtitle">Ask questions about your data — analyzed by Python pandas</p>
-
+ 
       <div className="chat-container">
         <div className="chat-messages" id="chat-messages">
           {messages.map((msg, i) => (
             <div key={i} className={`chat-msg chat-msg-${msg.role}`}>
               <div className="chat-msg-avatar">{msg.role === 'assistant' ? '🤖' : 'SB'}</div>
-              <div className="chat-msg-bubble" dangerouslySetInnerHTML={{ __html: formatMarkdown(msg.text) }} />
+              <div className="chat-msg-bubble">
+                <div dangerouslySetInnerHTML={renderMessageContent(msg)} />
+                {msg.chart && (!msg.text || !msg.text.includes('[CHART]')) && (
+                  <div className="chat-inline-chart" style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <div className="chart-image-container" style={{ background: '#ffffff', padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--color-border)', maxWidth: '750px' }}>
+                      <img
+                        src={`data:image/png;base64,${msg.chart}`}
+                        alt="Generated Chart"
+                        className="chart-image"
+                        style={{ display: 'block', maxWidth: '100%', height: 'auto', borderRadius: '4px' }}
+                      />
+                    </div>
+                    {msg.chartDescription && (
+                      <div 
+                        className="chat-chart-desc" 
+                        style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', lineHeight: '1.4' }}
+                        dangerouslySetInnerHTML={{ __html: formatMarkdown(msg.chartDescription) }}
+                      />
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           ))}
           {loading && (
@@ -63,6 +89,7 @@ export default function AIChatPage({ fileData }) {
             </div>
           )}
         </div>
+
 
         {fileData && messages.length <= 2 && (
           <div className="chat-suggestions">
@@ -100,4 +127,32 @@ function formatMarkdown(text) {
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
     .replace(/`(.*?)`/g, '<code>$1</code>')
     .replace(/\n/g, '<br/>');
+}
+
+// Inline chart parser
+function renderMessageContent(msg) {
+  const formattedText = formatMarkdown(msg.text);
+  
+  if (msg.chart && msg.text && msg.text.includes('[CHART]')) {
+    const chartHtml = `
+      <div class="chat-inline-chart" style="margin-top: 0.75rem; margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem;">
+        <div class="chart-image-container" style="background: #ffffff; padding: 0.5rem; border-radius: 8px; border: 1px solid var(--color-border); max-width: 750px;">
+          <img
+            src="data:image/png;base64,${msg.chart}"
+            alt="Generated Chart"
+            class="chart-image"
+            style="display: block; max-width: 100%; height: auto; border-radius: 4px;"
+          />
+        </div>
+        ${msg.chartDescription ? `
+          <div class="chat-chart-desc" style="font-size: 0.8125rem; color: var(--color-text-secondary); line-height: 1.4;">
+            ${formatMarkdown(msg.chartDescription)}
+          </div>
+        ` : ''}
+      </div>
+    `;
+    return { __html: formattedText.replace('[CHART]', chartHtml) };
+  }
+  
+  return { __html: formattedText };
 }
