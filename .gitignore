@@ -29,4 +29,6 @@ __pycache__/
 *.class
 .env
 venv/
+.venv/
 env/
+models/saved_models/
