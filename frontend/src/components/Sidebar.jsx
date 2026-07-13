@@ -22,7 +22,7 @@ const pipelineSteps = [
   { id: 'export', label: 'Export', icon: DownloadIcon, step: 8 },
 ];
 
-export default function Sidebar({ activeStep, onStepChange, fileInfo, progress }) {
+export default function Sidebar({ activeStep, onStepChange, fileInfo, progress, user }) {
   return (
     <aside className="sidebar" id="sidebar">
       {/* Brand */}
@@ -83,12 +83,32 @@ export default function Sidebar({ activeStep, onStepChange, fileInfo, progress }
 
       {/* User */}
       <div className="sidebar-user" id="sidebar-user">
-        <div className="sidebar-user-avatar">SB</div>
+        {user?.photoURL ? (
+          <img src={user.photoURL} alt="User Avatar" className="sidebar-user-avatar-img" style={{width: 34, height: 34, borderRadius: 8}} />
+        ) : (
+          <div className="sidebar-user-avatar">
+            {user?.displayName ? user.displayName.substring(0, 2).toUpperCase() : 'SB'}
+          </div>
+        )}
         <div className="sidebar-user-info">
-          <div className="name">Siddharth</div>
-          <div className="role">ML Engineer</div>
+          <div className="name">{user?.displayName || 'Siddharth'}</div>
+          <div className="role">{user?.email || 'ML Engineer'}</div>
         </div>
-        <button className="sidebar-user-settings" aria-label="Settings" id="btn-settings">
+        <button 
+          className="sidebar-user-settings" 
+          aria-label="Logout" 
+          id="btn-logout"
+          onClick={async () => {
+            try {
+              const { logout } = await import('../utils/auth');
+              await logout();
+            } catch (e) {
+              console.error(e);
+            }
+            window.location.reload();
+          }}
+          title="Logout"
+        >
           <SettingsIcon />
         </button>
       </div>
