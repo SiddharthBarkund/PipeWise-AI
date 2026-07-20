@@ -3,6 +3,11 @@ PipeWise-AI — Chat Visualization Engine
 Detects visualization requests in chat and generates inline charts.
 """
 
+import sys
+import os
+# Allow running this file directly as a script
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import re
 import random
 import numpy as np
@@ -244,3 +249,35 @@ def generate_chat_chart(df, question):
         plt.close(fig)
         print(f"⚠️ Chat chart generation error: {e}")
         return None, None
+
+
+if __name__ == "__main__":
+    print("🧪 Running Chat Visualizer tests on Titanic dataset...")
+    try:
+        from ml_engine.data_loader import load_demo_dataset
+        df, filename = load_demo_dataset()
+        print(f"Loaded demo dataset: {filename} with shape {df.shape}")
+        
+        test_questions = [
+            "Show me a scatter plot of age vs fare",
+            "Show a histogram of age",
+            "Show me a bar chart of sex vs survived",
+            "Give me a box plot of age group vs fare",
+            "Show a correlation heatmap",
+            "draw a pie chart of embarked",
+            "line plot of fare",
+            "countplot of pclass",
+        ]
+        
+        for q in test_questions:
+            print(f"\n👉 Testing question: '{q}'")
+            img_b64, desc = generate_chat_chart(df, q)
+            if img_b64:
+                print(f"   [SUCCESS]")
+                print(f"   Description: {desc}")
+                print(f"   Base64 Preview: {img_b64[:60]}... ({len(img_b64)} chars)")
+            else:
+                print(f"   [FAILED] No chart generated (or not detected as chart request)")
+                
+    except Exception as ex:
+        print(f"❌ Execution error: {ex}")
