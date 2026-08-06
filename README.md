@@ -1,12 +1,136 @@
-# React + Vite
+# 🚀 PipeWise-AI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<div align="center">
+  <img alt="PipeWise-AI Banner" src="https://via.placeholder.com/1000x200.png?text=PipeWise-AI+-+Full+ML+Pipeline" />
+</div>
 
-Currently, two official plugins are available:
+<p align="center">
+  <strong>An end-to-end Machine Learning Pipeline API and intuitive web interface.</strong>
+</p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#tech-stack">Tech Stack</a> •
+  <a href="#getting-started">Getting Started</a> •
+  <a href="#api-endpoints">API Endpoints</a> •
+  <a href="#contributing">Contributing</a>
+</p>
+---
 
+## 💡 About PipeWise-AI
 
+**PipeWise-AI** is a comprehensive, full-stack machine learning pipeline application. It simplifies the entire machine learning workflow from data uploading and cleaning, to advanced visualizations, model training, and deriving AI-powered insights. Whether you're a data scientist needing a quick prototyping tool or a developer integrating ML capabilities, PipeWise-AI offers a robust backend powered by FastAPI and an interactive frontend built with React and Vite.
 
+## ✨ Features
 
+- **📤 Data Upload:** Easily ingest datasets (CSV, Excel).
+- **🧹 Data Cleaning:** Automated preprocessing, missing value handling, and data transformation.
+- **📊 Visualization:** Generate rich, interactive charts to understand your data distribution.
+- **🧠 Model Training:** Train multiple models (XGBoost, LightGBM, CatBoost, Scikit-Learn) with ease.
+- **📈 Insights:** Generate AI-driven insights from your model evaluations.
+- **💬 AI Chat:** Interact with your data and models through an integrated AI chat interface (Powered by Google GenAI & Groq).
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **Framework:** React 19 + Vite
+- **Charting:** Chart.js & react-chartjs-2
+- **Data Parsing:** PapaParse
+
+### Backend
+- **Framework:** FastAPI
+- **Data Manipulation:** Pandas, NumPy
+- **Machine Learning:** Scikit-Learn, XGBoost, LightGBM, CatBoost
+- **LLM Integration:** Google GenAI, Groq
+
+## 📂 Project Structure
+
+```text
+PipeWise-AI/
+├── backend/               # FastAPI Python Backend
+│   ├── app.py             # Main entry point
+│   ├── config.py          # Configuration settings
+│   ├── requirements.txt   # Python dependencies
+│   ├── routes/            # API Route definitions
+│   ├── ml_engine/         # Core ML processing logic
+│   └── models/            # Saved models
+│
+└── frontend/              # React + Vite Frontend
+    ├── package.json       # Node dependencies
+    ├── src/               # React components and views
+    └── index.html         # Main HTML template
+```
+
+## 🚀 Getting Started
+
+Follow these steps to run PipeWise-AI locally.
+
+### Prerequisites
+- Node.js (v18 or higher)
+- Python (v3.9 or higher)
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/SiddharthBarkund/PipeWise-AI.git
+cd PipeWise-AI
+```
+
+### 2. Backend Setup
+Navigate to the backend directory and set up a virtual environment.
+```bash
+cd backend
+python -m venv .venv
+
+# Activate virtual environment
+# On Windows:
+.venv\Scripts\activate
+# On Mac/Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Start the FastAPI server
+python app.py
+```
+The backend will be running at `http://localhost:8000`.
+
+### 3. Frontend Setup
+Open a new terminal, navigate to the frontend directory, and start the Vite development server.
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
+```
+The frontend will be running at `http://localhost:5173`.
+
+## 📡 API Endpoints
+
+The backend provides several RESTful endpoints to interact with the pipeline:
+
+- `POST /api/upload` - Upload datasets.
+- `POST /api/clean` - Clean and preprocess data.
+- `GET /api/visualize` - Retrieve data for visualization.
+- `POST /api/train` - Train machine learning models.
+- `GET /api/insights` - Get AI-driven insights.
+- `POST /api/chat` - Chat with the AI regarding the pipeline.
+
+Visit `http://localhost:8000/docs` to view the interactive Swagger API documentation.
+
+## 🤝 Contributing
+
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
