@@ -328,9 +328,7 @@ Contributions make open-source software great! To contribute:
 
 ---
 
-## 📄 License
 
-Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for complete terms.
 
 <div align="center">
   <sub>Built with ❤️ by Siddharth Barkund • Empowering developers with rapid AutoML workflows</sub>
